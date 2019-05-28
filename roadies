@@ -1,0 +1,72 @@
+def main():
+    testCases = int(input())
+    results = []
+    for tc in range(testCases):
+        numberOfBoxes = int(input())
+        numbersText = input()
+        numbers = sorted(numbersText.split(' '), reverse=True, key=getNum)
+        combinition = []
+        finalsum = 0
+        for numstr in numbers:
+            num = getNum(numstr)
+            if len(combinition) > 0:
+                for comb in combinition:
+                    if hasCommonDigit(comb, numstr) is False:
+                        newComb = []
+                        newComb.extend(comb)
+                        newComb.append(num)
+                        combinition.append(newComb)
+            else:
+                combinition.append([])
+                combinition.append([num])
+
+        for comb in combinition:
+            if len(comb) > 0:
+                newsum = sum(comb)
+                if newsum > finalsum:
+                    finalsum = newsum
+
+        results.append(finalsum)
+        
+    for r in results:
+        print(r)
+
+def hasCommonDigit(numbers, checkNumber):
+    has = False
+    for num in numbers:
+        for dig in str(num):
+            if dig in checkNumber:
+                return True
+                break
+
+    return False
+
+
+def findsum(numbers):
+    userDigits = []
+    skipped = []
+    sum = 0
+    for num in numbers:
+        numDigits = []
+        intnumbers = numbers
+        intnumbers.pop(num)
+        canUse = True
+        for dig in num:
+            if dig in userDigits:
+                canUse = False
+                break
+            else:
+                numDigits += dig
+        if canUse:
+            sum += int(num)
+            userDigits.extend(numDigits)
+        else:
+            skipped.append(num)
+
+    return sum, skipped
+
+
+def getNum(elem):
+    return int(elem)
+
+main()
